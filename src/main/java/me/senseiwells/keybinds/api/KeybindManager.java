@@ -1,5 +1,7 @@
 package me.senseiwells.keybinds.api;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.InputConstants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import me.senseiwells.keybinds.impl.compat.vanilla.VanillaKeybindsList;
@@ -10,12 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
  * Manager for all custom keybinds.
  */
 public class KeybindManager {
 	private static final Logger logger = LoggerFactory.getLogger("KeybindManager");
+	private static final Multimap<ResourceLocation, Consumer<Keybind>> consumers = HashMultimap.create();
 	private static final Map<ResourceLocation, Keybind> keybinds = new Object2ObjectLinkedOpenHashMap<>();
 
 	private static final List<InputConstants.Key> held = new ArrayList<>();
@@ -36,6 +41,7 @@ public class KeybindManager {
 		if (previous != null) {
 			logger.warn("Overwriting keybind {}, {} -> {}", id, previous.name().getString(), keybind.name().getString());
 		}
+		consumers.removeAll(id).forEach(c -> c.accept(keybind));
 		return keybind;
 	}
 
@@ -53,6 +59,26 @@ public class KeybindManager {
 	}
 
 	/**
+	 * Creates and registers a custom keybind.
+	 *
+	 * @param id The id of the keybind.
+	 * @return The created keybind.
+	 */
+	public static Keybind register(ResourceLocation id) {
+		return register(id, InputKeys.EMPTY);
+	}
+
+	/**
+	 * Unregisters a custom keybind
+	 *
+	 * @param id The id of the custom keybind to remove.
+	 * @return Whether the custom keybind was removed.
+	 */
+	public static boolean unregister(ResourceLocation id) {
+		return keybinds.remove(id) != null;
+	}
+
+	/**
 	 * Adds a keybind to the vanilla controls screen.
 	 * <p>
 	 * Your category should be a translation key.
@@ -62,7 +88,7 @@ public class KeybindManager {
 	 * @param category The category of the keybind.
 	 * @param keybind The keybind to add.
 	 */
-	public static void addToControlScreen(String category, Keybind keybind) {
+	public static void addToControlsScreen(String category, Keybind keybind) {
 		VanillaKeybindsList.add(category, keybind);
 	}
 
@@ -74,6 +100,16 @@ public class KeybindManager {
 	 */
 	public static Optional<Keybind> get(ResourceLocation id) {
 		return Optional.ofNullable(keybinds.get(id));
+	}
+
+	@Internal
+	public static void apply(ResourceLocation id, Consumer<Keybind> consumer) {
+		Keybind keybind = keybinds.get(id);
+		if (keybind != null) {
+			consumer.accept(keybind);
+			return;
+		}
+		consumers.put(id, consumer);
 	}
 
 	@Internal

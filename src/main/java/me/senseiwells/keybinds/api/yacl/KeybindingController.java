@@ -7,7 +7,6 @@ import dev.isxander.yacl3.api.utils.Dimension;
 import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
 import dev.isxander.yacl3.gui.controllers.ControllerWidget;
-import it.unimi.dsi.fastutil.ints.IntList;
 import me.senseiwells.keybinds.api.InputKeys;
 import me.senseiwells.keybinds.impl.util.KeybindingUtils;
 import net.minecraft.network.chat.Component;

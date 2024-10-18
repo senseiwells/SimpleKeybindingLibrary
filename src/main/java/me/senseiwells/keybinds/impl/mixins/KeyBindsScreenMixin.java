@@ -62,7 +62,7 @@ public class KeyBindsScreenMixin implements DuckKeyBindsScreen {
 	private void onKeyPressed(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
 		if (this.skl$keybind != null) {
 			if (KeybindingUtils.ESCAPE_KEYS.contains(keyCode)) {
-				this.skl$keybind = null;
+				this.skl$setKeybind(null);
 				cir.setReturnValue(true);
 			} else if (this.addKeyToKeybinds(InputConstants.getKey(keyCode, scanCode))) {
 				cir.setReturnValue(true);

@@ -42,22 +42,13 @@ public class SimpleKeybind implements Keybind {
 	public void hold() {
 		if (!this.held) {
 			this.held = true;
-			this.listeners.forEach(KeybindListener::onHold);
+			this.listeners.forEach(KeybindListener::onPress);
 		}
 	}
 
 	@Override
 	public void click() {
 		this.clicks++;
-
-		for (KeybindListener listener : this.listeners) {
-			if (listener.onClick()) {
-				this.clicks--;
-			}
-			if (this.clicks <= 0) {
-				return;
-			}
-		}
 	}
 
 	@Override

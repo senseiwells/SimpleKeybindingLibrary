@@ -1,6 +1,5 @@
 package me.senseiwells.keybinds.api;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 /**
@@ -9,18 +8,9 @@ import java.util.function.Consumer;
  */
 public interface KeybindListener {
 	/**
-	 * This event is triggered when the keybind is clicked.
-	 *
-	 * @return Whether the listener consumed the click.
+	 * This event is triggered when the keybind is pressed.
 	 */
-	default boolean onClick() {
-		return false;
-	}
-
-	/**
-	 * This event is triggered when the keybind is held.
-	 */
-	default void onHold() {
+	default void onPress() {
 
 	}
 
@@ -40,35 +30,6 @@ public interface KeybindListener {
 
 	}
 
-	/**
-	 * Creates a listener that will run when
-	 * the keybind is clicked.
-	 *
-	 * @param runnable The runnable to run.
-	 * @return The created listener.
-	 */
-	static KeybindListener onClick(BooleanSupplier runnable) {
-		return new KeybindListener() {
-			@Override
-			public boolean onClick() {
-				return runnable.getAsBoolean();
-			}
-		};
-	}
-
-	/**
-	 * Creates a listener that will run when
-	 * the keybind is clicked.
-	 *
-	 * @param runnable The runnable to run.
-	 * @return The created listener.
-	 */
-	static KeybindListener onClick(Runnable runnable) {
-		return onClick(() -> {
-			runnable.run();
-			return true;
-		});
-	}
 
 	/**
 	 * Creates a listener that will run when
@@ -77,10 +38,10 @@ public interface KeybindListener {
 	 * @param runnable The runnable to run.
 	 * @return The created listener.
 	 */
-	static KeybindListener onHold(Runnable runnable) {
+	static KeybindListener onPress(Runnable runnable) {
 		return new KeybindListener() {
 			@Override
-			public void onHold() {
+			public void onPress() {
 				runnable.run();
 			}
 		};

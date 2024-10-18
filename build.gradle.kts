@@ -24,7 +24,7 @@ dependencies {
     })
 
     modImplementation(libs.fabric.loader)
-    modRuntimeOnly(libs.fabric.api)
+    modImplementation(libs.fabric.api)
 
     modCompileOnly(libs.yacl)
 }
@@ -59,6 +59,8 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(project.components.getByName("java"))
             artifactId = "simple-keybinding-library"
+
+            updateReadme("./README.md")
         }
     }
 
@@ -77,5 +79,15 @@ publishing {
                 }
             }
         }
+    }
+}
+
+private fun MavenPublication.updateReadme(vararg readmes: String) {
+    val location = "${groupId}:${artifactId}"
+    val regex = Regex("""${Regex.escape(location)}:[\d\.\-a-zA-Z+]+""")
+    val locationWithVersion = "${location}:${version}"
+    for (path in readmes) {
+        val readme = file(path)
+        readme.writeText(readme.readText().replace(regex, locationWithVersion))
     }
 }
