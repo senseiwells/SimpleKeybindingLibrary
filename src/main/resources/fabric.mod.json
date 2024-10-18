@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "simple-keybinding-library",
+  "version": "${version}",
+  "name": "Simple Keybinding Library",
+  "description": "A small library for handling keybinds",
+  "authors": [
+    "Sensei"
+  ],
+  "contact": {
+    "homepage": "https://github.com/senseiwells/SimpleKeybindingLibrary"
+  },
+  "license": "MIT",
+  "icon": "assets/simple-keybinding-library/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "me.senseiwells.keybinds.impl.compat.CompatabilityLoader::load"
+    ]
+  },
+  "mixins": [
+    "keybinds.mixins.json"
+  ],
+  "accessWidener": "simple-keybinding-library.accesswidener",
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "${minecraft_dependency}"
+  }
+}

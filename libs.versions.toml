@@ -1,0 +1,16 @@
+[versions]
+fabric-loom   = "1.7-SNAPSHOT"
+minecraft     = "1.21.1"
+fabric-loader = "0.16.7"
+parchment     = "1.21:2024.07.28"
+fabric-api    = "0.103.0+1.21.1"
+yacl          = "3.5.0+1.21-fabric"
+
+[libraries]
+minecraft     = { module = "com.mojang:minecraft"                 , version.ref = "minecraft" }
+fabric-loader = { module = "net.fabricmc:fabric-loader"           , version.ref = "fabric-loader" }
+fabric-api    = { module = "net.fabricmc.fabric-api:fabric-api"   , version.ref = "fabric-api" }
+yacl          = { module = "dev.isxander:yet-another-config-lib"  , version.ref = "yacl" }
+
+[plugins]
+fabric-loom   = { id = "fabric-loom"                    , version.ref = "fabric-loom" }
