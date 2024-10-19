@@ -8,7 +8,7 @@
     "Sensei"
   ],
   "contact": {
-    "homepage": "https://github.com/senseiwells/SimpleKeybindingLibrary"
+    "sources": "https://github.com/senseiwells/SimpleKeybindingLibrary"
   },
   "license": "MIT",
   "icon": "assets/simple-keybinding-library/icon.png",
@@ -25,5 +25,10 @@
   "depends": {
     "fabricloader": "*",
     "minecraft": "${minecraft_dependency}"
+  },
+  "custom": {
+    "modmenu": {
+      "badges": [ "library" ]
+    }
   }
 }
