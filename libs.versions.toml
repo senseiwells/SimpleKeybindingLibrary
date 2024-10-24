@@ -1,10 +1,10 @@
 [versions]
-fabric-loom   = "1.7-SNAPSHOT"
-minecraft     = "1.21.1"
+fabric-loom   = "1.8-SNAPSHOT"
+minecraft     = "1.21.3"
 fabric-loader = "0.16.7"
 parchment     = "1.21:2024.07.28"
-fabric-api    = "0.103.0+1.21.1"
-yacl          = "3.5.0+1.21-fabric"
+fabric-api    = "0.106.1+1.21.3"
+yacl          = "3.6.1+1.21.2-fabric"
 
 [libraries]
 minecraft     = { module = "com.mojang:minecraft"                 , version.ref = "minecraft" }
