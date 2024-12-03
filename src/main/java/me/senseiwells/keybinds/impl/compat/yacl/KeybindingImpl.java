@@ -31,7 +31,7 @@ public class KeybindingImpl extends SimpleOptionFactory<Keybinding, InputKeys> {
 					option.applyValue();
 					field.parent().save();
 				}));
-				option.addListener((o, keys) -> keybind.setKeys(keys));
+				option.addEventListener((o, e) -> keybind.setKeys(o.pendingValue()));
 			});
 		}
 		return option;

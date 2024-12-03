@@ -3,7 +3,6 @@ package me.senseiwells.keybinds.impl.compat.vanilla;
 import com.google.common.collect.ImmutableList;
 import me.senseiwells.keybinds.api.InputKeys;
 import me.senseiwells.keybinds.api.Keybind;
-import me.senseiwells.keybinds.impl.mixins.AbstractSelectionListAccessor;
 import me.senseiwells.keybinds.impl.mixins.KeyBindsListAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -65,7 +64,7 @@ public class KeybindEntry extends KeyBindsList.Entry {
 		boolean hovering,
 		float partialTick
 	) {
-		int scrollbarPosition = ((AbstractSelectionListAccessor) this.list).getCurrentScrollbarPosition();
+		int scrollbarPosition = this.list.getRowRight() + 8;
 		int resetButtonX = scrollbarPosition - this.resetButton.getWidth() - 10;
 		int buttonY = top - 2;
 		this.resetButton.setPosition(resetButtonX, buttonY);
