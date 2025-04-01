@@ -66,18 +66,22 @@ public record KeybindingController(
 
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
-			if (this.isAvailable() && this.getDimension().isPointInside((int) mouseX, (int) mouseY)) {
-				if (!this.isFocused()) {
-					this.setFocused(true);
+			if (this.getDimension().isPointInside((int) mouseX, (int) mouseY)) {
+				if (this.isAvailable()) {
+					if (!this.isFocused()) {
+						this.setFocused(true);
+						return true;
+					}
+
+					InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(button);
+					if (!this.keys.contains(key)) {
+						this.keys.add(key);
+					}
 					return true;
 				}
-
-				InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(button);
-				if (!this.keys.contains(key)) {
-					this.keys.add(key);
-				}
-				return true;
+				return false;
 			}
+			this.control.option().requestSet(new InputKeys(this.keys));
 			this.unfocus();
 			return false;
 		}
