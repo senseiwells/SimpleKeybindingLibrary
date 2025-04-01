@@ -1,15 +1,16 @@
 package me.senseiwells.keybinds.api;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Simple implementation of the {@link Keybind} interface.
  */
 public class SimpleKeybind implements Keybind {
-	private final List<KeybindListener> listeners = new ArrayList<>();
+	private final Set<KeybindListener> listeners = new LinkedHashSet<>();
 
 	private final Component name;
 	private final InputKeys defaults;
@@ -42,7 +43,7 @@ public class SimpleKeybind implements Keybind {
 	public void hold() {
 		if (!this.held) {
 			this.held = true;
-			this.listeners.forEach(KeybindListener::onPress);
+			this.forEachListener(KeybindListener::onPress);
 		}
 	}
 
@@ -55,7 +56,7 @@ public class SimpleKeybind implements Keybind {
 	public void release() {
 		if (this.held) {
 			this.held = false;
-			this.listeners.forEach(KeybindListener::onRelease);
+			this.forEachListener(KeybindListener::onRelease);
 		}
 	}
 
@@ -85,12 +86,19 @@ public class SimpleKeybind implements Keybind {
 	public void setKeys(InputKeys keys) {
 		if (!this.keys.equals(keys)) {
 			this.keys = keys;
-			this.listeners.forEach(listener -> listener.onSetKeys(keys));
+			this.forEachListener(listener -> listener.onSetKeys(keys));
 		}
 	}
 
 	@Override
 	public void resetKeysToDefault() {
 		this.setKeys(this.defaults);
+	}
+
+	private void forEachListener(Consumer<KeybindListener> consumer) {
+		List<KeybindListener> copy = new ArrayList<>(this.listeners);
+		for (KeybindListener listener : copy) {
+			consumer.accept(listener);
+		}
 	}
 }

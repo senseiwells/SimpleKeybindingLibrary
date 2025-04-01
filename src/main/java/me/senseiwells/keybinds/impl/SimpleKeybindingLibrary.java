@@ -1,12 +1,15 @@
 package me.senseiwells.keybinds.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.minecraft.resources.ResourceLocation;
 
 public class SimpleKeybindingLibrary {
-	public static final Logger logger = LoggerFactory.getLogger("SimpleKeybindingLibrary");
+	public static final String MOD_ID = "simple-keybinding-library";
 
 	private SimpleKeybindingLibrary() {
 
+	}
+
+	public static ResourceLocation id(String path) {
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
 	}
 }

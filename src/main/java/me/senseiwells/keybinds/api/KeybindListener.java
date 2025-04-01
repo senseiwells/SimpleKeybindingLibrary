@@ -1,5 +1,8 @@
 package me.senseiwells.keybinds.api;
 
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.function.Consumer;
 
 /**
@@ -77,5 +80,44 @@ public interface KeybindListener {
 				consumer.accept(keys);
 			}
 		};
+	}
+
+	/**
+	 * Creates a listener with a given identity.
+	 *
+	 * @param id The identity of the listener.
+	 * @param listener The listener to wrap.
+	 * @return The wrapped listener.
+	 */
+	static KeybindListener identity(ResourceLocation id, KeybindListener listener) {
+		return new Keyed(id, listener);
+	}
+
+	@ApiStatus.Internal
+	record Keyed(ResourceLocation id, KeybindListener listener) implements KeybindListener {
+		@Override
+		public void onPress() {
+			this.listener.onPress();
+		}
+
+		@Override
+		public void onRelease() {
+			this.listener.onRelease();
+		}
+
+		@Override
+		public void onSetKeys(InputKeys keys) {
+			this.listener.onSetKeys(keys);
+		}
+
+		@Override
+		public int hashCode() {
+			return this.id.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return obj instanceof Keyed other && this.id.equals(other.id);
+		}
 	}
 }

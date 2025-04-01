@@ -11,11 +11,14 @@ import me.senseiwells.keybinds.api.KeybindListener;
 import me.senseiwells.keybinds.api.KeybindManager;
 import me.senseiwells.keybinds.api.yacl.Keybinding;
 import me.senseiwells.keybinds.api.yacl.KeybindingController;
+import me.senseiwells.keybinds.impl.SimpleKeybindingLibrary;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 @Internal
 public class KeybindingImpl extends SimpleOptionFactory<Keybinding, InputKeys> {
+	private static final ResourceLocation ID = SimpleKeybindingLibrary.id("set-keys");
+
 	@Override
 	public Option<InputKeys> createOption(
 		Keybinding annotation,
@@ -26,11 +29,11 @@ public class KeybindingImpl extends SimpleOptionFactory<Keybinding, InputKeys> {
 		if (!annotation.id().isEmpty()) {
 			ResourceLocation id = ResourceLocation.parse(annotation.id());
 			KeybindManager.apply(id, keybind -> {
-				keybind.addListener(KeybindListener.onSetKeys(keys -> {
+				keybind.addListener(KeybindListener.identity(ID, KeybindListener.onSetKeys(keys -> {
 					option.requestSet(keys);
 					option.applyValue();
 					field.parent().save();
-				}));
+				})));
 				option.addEventListener((o, e) -> keybind.setKeys(o.pendingValue()));
 			});
 		}

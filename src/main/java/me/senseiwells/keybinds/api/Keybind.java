@@ -1,6 +1,7 @@
 package me.senseiwells.keybinds.api;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 
 /**
