@@ -2,6 +2,9 @@ package me.senseiwells.keybinds.api;
 
 import com.google.gson.*;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import me.senseiwells.keybinds.impl.util.KeybindingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
@@ -18,6 +21,10 @@ import java.util.stream.IntStream;
 public class InputKeys extends AbstractCollection<InputConstants.Key> {
 	private static final Component SEPARATOR = Component.literal(" + ");
 	public static final InputKeys EMPTY = new InputKeys(List.of());
+
+	public static final Codec<InputKeys> CODEC = KeybindingUtils.KEY_CODEC.listOf().xmap(
+		InputKeys::new, keys -> keys.keys
+	);
 
 	private final List<InputConstants.Key> keys;
 
@@ -115,27 +122,12 @@ public class InputKeys extends AbstractCollection<InputConstants.Key> {
 
 		@Override
 		public InputKeys deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			List<InputConstants.Key> keys = new ArrayList<>();
-			JsonArray array = (JsonArray) json;
-			for (JsonElement element : array) {
-				JsonObject object = (JsonObject) element;
-				InputConstants.Type type = context.deserialize(object.get("type"), InputConstants.Type.class);
-				int code = object.get("code").getAsInt();
-				keys.add(type.getOrCreate(code));
-			}
-			return new InputKeys(keys);
+			return CODEC.parse(JsonOps.INSTANCE, json).getOrThrow(JsonParseException::new);
 		}
 
 		@Override
 		public JsonElement serialize(InputKeys src, Type typeOfSrc, JsonSerializationContext context) {
-			JsonArray array = new JsonArray();
-			for (InputConstants.Key key : src) {
-				JsonObject object = new JsonObject();
-				object.add("type", context.serialize(key.getType()));
-				object.addProperty("code", key.getValue());
-				array.add(object);
-			}
-			return array;
+			return CODEC.encodeStart(JsonOps.INSTANCE, src).getOrThrow(IllegalArgumentException::new);
 		}
 	}
 }
