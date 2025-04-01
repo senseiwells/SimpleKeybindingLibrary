@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    include(modImplementation("me.senseiwells:simple-keybinding-library:0.1.13+1.21.5")!!)
+    include(modImplementation("me.senseiwells:simple-keybinding-library:0.1.15+1.21.5")!!)
 }
 ```
 

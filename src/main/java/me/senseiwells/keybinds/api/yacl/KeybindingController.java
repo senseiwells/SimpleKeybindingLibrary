@@ -8,6 +8,7 @@ import dev.isxander.yacl3.gui.AbstractWidget;
 import dev.isxander.yacl3.gui.YACLScreen;
 import dev.isxander.yacl3.gui.controllers.ControllerWidget;
 import me.senseiwells.keybinds.api.InputKeys;
+import me.senseiwells.keybinds.impl.compat.yacl.EscapeCloseable;
 import me.senseiwells.keybinds.impl.util.KeybindingUtils;
 import net.minecraft.network.chat.Component;
 
@@ -38,7 +39,7 @@ public record KeybindingController(
 		return new KeybindingControllerElement(this, screen, widgetDimension);
 	}
 
-	public static class KeybindingControllerElement extends ControllerWidget<KeybindingController> {
+	public static class KeybindingControllerElement extends ControllerWidget<KeybindingController> implements EscapeCloseable {
 		private final List<InputConstants.Key> keys = new ArrayList<>();
 
 		public KeybindingControllerElement(KeybindingController control, YACLScreen screen, Dimension<Integer> dim) {
@@ -66,22 +67,18 @@ public record KeybindingController(
 
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
-			if (this.getDimension().isPointInside((int) mouseX, (int) mouseY)) {
-				if (this.isAvailable()) {
-					if (!this.isFocused()) {
-						this.setFocused(true);
-						return true;
-					}
-
-					InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(button);
-					if (!this.keys.contains(key)) {
-						this.keys.add(key);
-					}
+			if (this.isAvailable() && this.getDimension().isPointInside((int) mouseX, (int) mouseY)) {
+				if (!this.isFocused()) {
+					this.setFocused(true);
 					return true;
 				}
-				return false;
+
+				InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(button);
+				if (!this.keys.contains(key)) {
+					this.keys.add(key);
+				}
+				return true;
 			}
-			this.control.option().requestSet(new InputKeys(this.keys));
 			this.unfocus();
 			return false;
 		}
@@ -102,6 +99,11 @@ public record KeybindingController(
 				this.keys.add(key);
 			}
 			return true;
+		}
+
+		@Override
+		public boolean shouldCloseOnEsc() {
+			return !this.isFocused();
 		}
 	}
 }
