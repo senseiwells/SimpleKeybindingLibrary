@@ -5,9 +5,11 @@ import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.platform.InputConstants;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import me.senseiwells.keybinds.impl.compat.vanilla.VanillaKeybindsList;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,7 @@ import java.util.function.Consumer;
  */
 public class KeybindManager {
 	private static final Logger logger = LoggerFactory.getLogger("KeybindManager");
-	private static final Multimap<ResourceLocation, Consumer<Keybind>> consumers = HashMultimap.create();
+	private static final Multimap<ResourceLocation, @NotNull Consumer<Keybind>> consumers = HashMultimap.create();
 	private static final Map<ResourceLocation, Keybind> keybinds = new Object2ObjectLinkedOpenHashMap<>();
 
 	private static final List<InputConstants.Key> held = new ArrayList<>();
@@ -80,14 +82,13 @@ public class KeybindManager {
 	/**
 	 * Adds a keybind to the vanilla controls screen.
 	 * <p>
-	 * Your category should be a translation key.
 	 * You may use vanilla categories, such as:
-	 * {@link net.minecraft.client.KeyMapping#CATEGORY_MOVEMENT}
+	 * {@link net.minecraft.client.KeyMapping.Category#MISC}
 	 *
 	 * @param category The category of the keybind.
 	 * @param keybind The keybind to add.
 	 */
-	public static void addToControlsScreen(String category, Keybind keybind) {
+	public static void addToControlsScreen(KeyMapping.Category category, Keybind keybind) {
 		VanillaKeybindsList.add(category, keybind);
 	}
 

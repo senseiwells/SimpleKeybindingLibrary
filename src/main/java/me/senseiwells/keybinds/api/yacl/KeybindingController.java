@@ -10,6 +10,8 @@ import dev.isxander.yacl3.gui.controllers.ControllerWidget;
 import me.senseiwells.keybinds.api.InputKeys;
 import me.senseiwells.keybinds.impl.compat.yacl.EscapeCloseable;
 import me.senseiwells.keybinds.impl.util.KeybindingUtils;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -65,41 +67,41 @@ public record KeybindingController(
 			this.keys.clear();
 		}
 
-		@Override
-		public boolean mouseClicked(double mouseX, double mouseY, int button) {
-			if (this.isAvailable() && this.getDimension().isPointInside((int) mouseX, (int) mouseY)) {
-				if (!this.isFocused()) {
-					this.setFocused(true);
-					return true;
-				}
+        @Override
+        public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
+            if (this.isAvailable() && this.getDimension().isPointInside((int) event.x(), (int) event.y())) {
+                if (!this.isFocused()) {
+                    this.setFocused(true);
+                    return true;
+                }
 
-				InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(button);
-				if (!this.keys.contains(key)) {
-					this.keys.add(key);
-				}
-				return true;
-			}
-			this.unfocus();
-			return false;
-		}
+                InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(event.button());
+                if (!this.keys.contains(key)) {
+                    this.keys.add(key);
+                }
+                return true;
+            }
+            this.unfocus();
+            return false;
+        }
 
-		@Override
-		public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-			if (!this.isFocused()) {
-				return false;
-			}
+        @Override
+        public boolean keyPressed(KeyEvent event) {
+            if (!this.isFocused()) {
+                return false;
+            }
 
-			if (KeybindingUtils.ESCAPE_KEYS.contains(keyCode)) {
-				this.control.option().requestSet(new InputKeys(this.keys));
-				this.unfocus();
-				return true;
-			}
-			InputConstants.Key key = InputConstants.getKey(keyCode, scanCode);
-			if (!this.keys.contains(key)) {
-				this.keys.add(key);
-			}
-			return true;
-		}
+            if (KeybindingUtils.ESCAPE_KEYS.contains(event.key())) {
+                this.control.option().requestSet(new InputKeys(this.keys));
+                this.unfocus();
+                return true;
+            }
+            InputConstants.Key key = InputConstants.getKey(event);
+            if (!this.keys.contains(key)) {
+                this.keys.add(key);
+            }
+            return true;
+        }
 
 		@Override
 		public boolean shouldCloseOnEsc() {

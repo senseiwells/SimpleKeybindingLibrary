@@ -9,7 +9,7 @@
     "KeyboardHandlerMixin",
     "KeyEntryInvoker",
     "KeyEntryMixin",
-    "KeyMappingAccessor",
+    "KeyMappingCategoryAccessor",
     "compat.yacl.YACLScreenMixin"
   ],
   "injectors": {

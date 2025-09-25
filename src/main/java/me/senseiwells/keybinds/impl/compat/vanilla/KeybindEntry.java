@@ -51,31 +51,19 @@ public class KeybindEntry extends KeyBindsList.Entry {
 		this.refreshEntry();
 	}
 
-	@Override
-	public void render(
-		GuiGraphics graphics,
-		int index,
-		int top,
-		int left,
-		int width,
-		int height,
-		int mouseX,
-		int mouseY,
-		boolean hovering,
-		float partialTick
-	) {
-		int scrollbarPosition = this.list.getRowRight() + 8;
-		int resetButtonX = scrollbarPosition - this.resetButton.getWidth() - 10;
-		int buttonY = top - 2;
-		this.resetButton.setPosition(resetButtonX, buttonY);
-		this.resetButton.render(graphics, mouseX, mouseY, partialTick);
-		int changeButtonX = resetButtonX - 5 - this.changeButton.getWidth();
-		this.changeButton.setPosition(changeButtonX, buttonY);
-		this.changeButton.render(graphics, mouseX, mouseY, partialTick);
-		Font font = Minecraft.getInstance().font;
-		int middle = top + height / 2;
-		graphics.drawString(font, this.keybind.name(), left, middle - 9 / 2, -1);
-	}
+    @Override
+    public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean hovered, float partialTick) {
+        int scrollbarPosition = this.list.getRowRight() + 8;
+        int resetButtonX = scrollbarPosition - this.resetButton.getWidth() - 10;
+        int buttonY = this.getContentY() - 2;
+        this.resetButton.setPosition(resetButtonX, buttonY);
+        this.resetButton.render(graphics, mouseX, mouseY, partialTick);
+        int changeButtonX = resetButtonX - 5 - this.changeButton.getWidth();
+        this.changeButton.setPosition(changeButtonX, buttonY);
+        this.changeButton.render(graphics, mouseX, mouseY, partialTick);
+        Font font = Minecraft.getInstance().font;
+        graphics.drawString(font, this.keybind.name(), this.getContentX(), this.getContentYMiddle() - 9 / 2, -1);
+    }
 
 	@NotNull
 	@Override

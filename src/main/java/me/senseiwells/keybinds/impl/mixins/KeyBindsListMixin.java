@@ -39,11 +39,11 @@ public class KeyBindsListMixin extends ContainerObjectSelectionList<KeyBindsList
 	) {
 		this.clearEntries();
 
-		Multimap<String, Either<Keybind, KeyMapping>> sorted = VanillaKeybindsList.merge(minecraft.options.keyMappings);
+		Multimap<KeyMapping.Category, Either<Keybind, KeyMapping>> sorted = VanillaKeybindsList.merge(minecraft.options.keyMappings);
 
 		KeyBindsList self = (KeyBindsList) (Object) this;
-		for (Map.Entry<String, Collection<Either<Keybind, KeyMapping>>> entry : sorted.asMap().entrySet()) {
-			this.addEntry(self.new CategoryEntry(Component.translatable(entry.getKey())));
+		for (Map.Entry<KeyMapping.Category, Collection<Either<Keybind, KeyMapping>>> entry : sorted.asMap().entrySet()) {
+			this.addEntry(self.new CategoryEntry(entry.getKey()));
 			for (Either<Keybind, KeyMapping> either : entry.getValue()) {
 				either.ifLeft(keybind -> {
 					this.addEntry(new KeybindEntry(self, keybind));

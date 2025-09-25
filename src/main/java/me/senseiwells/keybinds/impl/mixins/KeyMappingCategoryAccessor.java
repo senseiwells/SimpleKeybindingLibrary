@@ -4,12 +4,12 @@ import net.minecraft.client.KeyMapping;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import java.util.Map;
+import java.util.List;
 
-@Mixin(KeyMapping.class)
-public interface KeyMappingAccessor {
-	@Accessor("CATEGORY_SORT_ORDER")
-	static Map<String, Integer> getCategorySortOrder() {
+@Mixin(KeyMapping.Category.class)
+public interface KeyMappingCategoryAccessor {
+	@Accessor("SORT_ORDER")
+	static List<KeyMapping.Category> getSortOrder() {
 		throw new AssertionError();
 	}
 }
