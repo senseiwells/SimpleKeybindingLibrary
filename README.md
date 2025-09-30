@@ -49,7 +49,7 @@ public class ExampleMod implements ModInitializer {
     @Override
     public void onInitialize() {
         // Add to Minecraft's control screen for configuration
-        KeybindManager.addToControlsScreen(KeyMapping.CATEGORY_GAMEPLAY, exampleKeybind);
+        KeybindManager.addToControlsScreen(KeyMapping.Category.MISC, exampleKeybind);
         
         exampleKeybind.addListener(KeybindListener.onPress(() -> {
             System.out.println("Example keybind was pressed!");
