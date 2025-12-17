@@ -1,6 +1,6 @@
 package me.senseiwells.keybinds.impl;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SimpleKeybindingLibrary {
 	public static final String MOD_ID = "simple-keybinding-library";
@@ -9,7 +9,7 @@ public class SimpleKeybindingLibrary {
 
 	}
 
-	public static ResourceLocation id(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+	public static Identifier id(String path) {
+		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
 }

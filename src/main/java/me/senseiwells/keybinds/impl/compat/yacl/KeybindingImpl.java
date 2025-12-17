@@ -1,7 +1,6 @@
 package me.senseiwells.keybinds.impl.compat.yacl;
 
 import dev.isxander.yacl3.api.Option;
-import dev.isxander.yacl3.api.OptionFlag;
 import dev.isxander.yacl3.api.controller.ControllerBuilder;
 import dev.isxander.yacl3.config.v2.api.ConfigField;
 import dev.isxander.yacl3.config.v2.api.autogen.OptionAccess;
@@ -12,12 +11,12 @@ import me.senseiwells.keybinds.api.KeybindManager;
 import me.senseiwells.keybinds.api.yacl.Keybinding;
 import me.senseiwells.keybinds.api.yacl.KeybindingController;
 import me.senseiwells.keybinds.impl.SimpleKeybindingLibrary;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 @Internal
 public class KeybindingImpl extends SimpleOptionFactory<Keybinding, InputKeys> {
-	private static final ResourceLocation ID = SimpleKeybindingLibrary.id("set-keys");
+	private static final Identifier ID = SimpleKeybindingLibrary.id("set-keys");
 
 	@Override
 	public Option<InputKeys> createOption(
@@ -27,7 +26,7 @@ public class KeybindingImpl extends SimpleOptionFactory<Keybinding, InputKeys> {
 	) {
 		Option<InputKeys> option = super.createOption(annotation, field, optionAccess);
 		if (!annotation.id().isEmpty()) {
-			ResourceLocation id = ResourceLocation.parse(annotation.id());
+			Identifier id = Identifier.parse(annotation.id());
 			KeybindManager.apply(id, keybind -> {
 				keybind.addListener(KeybindListener.identity(ID, KeybindListener.onSetKeys(keys -> {
 					option.requestSet(keys);

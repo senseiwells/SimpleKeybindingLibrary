@@ -1,7 +1,6 @@
 package me.senseiwells.keybinds.api;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
 import java.util.function.Consumer;

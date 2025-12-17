@@ -34,7 +34,7 @@ java {
 }
 
 loom {
-    accessWidenerPath.set(file("src/main/resources/simple-keybinding-library.accesswidener"))
+    accessWidenerPath.set(file("src/main/resources/simple-keybinding-library.classtweaker"))
 }
 
 tasks {

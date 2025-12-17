@@ -21,7 +21,7 @@
   "mixins": [
     "keybinds.mixins.json"
   ],
-  "accessWidener": "simple-keybinding-library.accesswidener",
+  "accessWidener": "simple-keybinding-library.classtweaker",
   "depends": {
     "fabricloader": "*",
     "minecraft": "${minecraft_dependency}"

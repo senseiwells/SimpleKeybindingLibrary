@@ -7,7 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import me.senseiwells.keybinds.impl.compat.vanilla.VanillaKeybindsList;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -21,8 +21,8 @@ import java.util.function.Consumer;
  */
 public class KeybindManager {
 	private static final Logger logger = LoggerFactory.getLogger("KeybindManager");
-	private static final Multimap<ResourceLocation, @NotNull Consumer<Keybind>> consumers = HashMultimap.create();
-	private static final Map<ResourceLocation, Keybind> keybinds = new Object2ObjectLinkedOpenHashMap<>();
+	private static final Multimap<Identifier, @NotNull Consumer<Keybind>> consumers = HashMultimap.create();
+	private static final Map<Identifier, Keybind> keybinds = new Object2ObjectLinkedOpenHashMap<>();
 
 	private static final List<InputConstants.Key> held = new ArrayList<>();
 
@@ -37,7 +37,7 @@ public class KeybindManager {
 	 * @param keybind The keybind to register.
 	 * @return The registered keybind.
 	 */
-	public static Keybind register(ResourceLocation id, Keybind keybind) {
+	public static Keybind register(Identifier id, Keybind keybind) {
 		Keybind previous = keybinds.put(id, keybind);
 		if (previous != null) {
 			logger.warn("Overwriting keybind {}, {} -> {}", id, previous.name().getString(), keybind.name().getString());
@@ -53,7 +53,7 @@ public class KeybindManager {
 	 * @param keys The keys of the keybind.
 	 * @return The created keybind.
 	 */
-	public static Keybind register(ResourceLocation id, InputKeys keys) {
+	public static Keybind register(Identifier id, InputKeys keys) {
 		Component name = Component.translatable("key.%s.%s".formatted(id.getNamespace(), id.getPath()));
 		Keybind keybind = new SimpleKeybind(name, keys);
 		return register(id, keybind);
@@ -65,7 +65,7 @@ public class KeybindManager {
 	 * @param id The id of the keybind.
 	 * @return The created keybind.
 	 */
-	public static Keybind register(ResourceLocation id) {
+	public static Keybind register(Identifier id) {
 		return register(id, InputKeys.EMPTY);
 	}
 
@@ -75,7 +75,7 @@ public class KeybindManager {
 	 * @param id The id of the custom keybind to remove.
 	 * @return Whether the custom keybind was removed.
 	 */
-	public static boolean unregister(ResourceLocation id) {
+	public static boolean unregister(Identifier id) {
 		return keybinds.remove(id) != null;
 	}
 
@@ -98,12 +98,12 @@ public class KeybindManager {
 	 * @param id The id of the keybind.
 	 * @return The keybind, or null if not found.
 	 */
-	public static Optional<Keybind> get(ResourceLocation id) {
+	public static Optional<Keybind> get(Identifier id) {
 		return Optional.ofNullable(keybinds.get(id));
 	}
 
 	@Internal
-	public static void apply(ResourceLocation id, Consumer<Keybind> consumer) {
+	public static void apply(Identifier id, Consumer<Keybind> consumer) {
 		Keybind keybind = keybinds.get(id);
 		if (keybind != null) {
 			consumer.accept(keybind);

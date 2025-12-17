@@ -1,6 +1,6 @@
 package me.senseiwells.keybinds.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Consumer;
@@ -89,12 +89,12 @@ public interface KeybindListener {
 	 * @param listener The listener to wrap.
 	 * @return The wrapped listener.
 	 */
-	static KeybindListener identity(ResourceLocation id, KeybindListener listener) {
+	static KeybindListener identity(Identifier id, KeybindListener listener) {
 		return new Keyed(id, listener);
 	}
 
 	@ApiStatus.Internal
-	record Keyed(ResourceLocation id, KeybindListener listener) implements KeybindListener {
+	record Keyed(Identifier id, KeybindListener listener) implements KeybindListener {
 		@Override
 		public void onPress() {
 			this.listener.onPress();
