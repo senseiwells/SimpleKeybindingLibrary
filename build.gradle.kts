@@ -11,22 +11,17 @@ repositories {
     maven("https://jitpack.io")
 }
 
-val modVersion = "0.2.2"
+val modVersion = "0.3.0"
 version = "${modVersion}+${libs.versions.minecraft.get()}"
 group = "me.senseiwells"
 
 dependencies {
     minecraft(libs.minecraft)
-    @Suppress("UnstableApiUsage")
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${libs.versions.parchment.get()}@zip")
-    })
 
-    modImplementation(libs.fabric.loader)
-    modImplementation(libs.fabric.api)
+    implementation(libs.fabric.loader)
+    implementation(libs.fabric.api)
 
-    modCompileOnly(libs.yacl)
+    compileOnly(libs.yacl)
 }
 
 java {

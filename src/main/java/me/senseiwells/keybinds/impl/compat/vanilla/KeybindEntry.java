@@ -6,7 +6,7 @@ import me.senseiwells.keybinds.api.Keybind;
 import me.senseiwells.keybinds.impl.mixins.KeyBindsListAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screens.options.controls.KeyBindsList;
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -51,27 +50,25 @@ public class KeybindEntry extends KeyBindsList.Entry {
 		this.refreshEntry();
 	}
 
-    @Override
-    public void renderContent(GuiGraphics graphics, int mouseX, int mouseY, boolean hovered, float partialTick) {
-        int scrollbarPosition = this.list.getRowRight() + 8;
-        int resetButtonX = scrollbarPosition - this.resetButton.getWidth() - 10;
-        int buttonY = this.getContentY() - 2;
-        this.resetButton.setPosition(resetButtonX, buttonY);
-        this.resetButton.render(graphics, mouseX, mouseY, partialTick);
-        int changeButtonX = resetButtonX - 5 - this.changeButton.getWidth();
-        this.changeButton.setPosition(changeButtonX, buttonY);
-        this.changeButton.render(graphics, mouseX, mouseY, partialTick);
-        Font font = Minecraft.getInstance().font;
-        graphics.drawString(font, this.keybind.name(), this.getContentX(), this.getContentYMiddle() - 9 / 2, -1);
-    }
+	@Override
+	public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
+		int scrollbarPosition = this.list.getRowRight() + 8;
+		int resetButtonX = scrollbarPosition - this.resetButton.getWidth() - 10;
+		int buttonY = this.getContentY() - 2;
+		this.resetButton.setPosition(resetButtonX, buttonY);
+		this.resetButton.extractRenderState(graphics, mouseX, mouseY, a);
+		int changeButtonX = resetButtonX - 5 - this.changeButton.getWidth();
+		this.changeButton.setPosition(changeButtonX, buttonY);
+		this.changeButton.extractRenderState(graphics, mouseX, mouseY, a);
+		Font font = Minecraft.getInstance().font;
+		graphics.text(font, this.keybind.name(), this.getContentX(), this.getContentYMiddle() - 9 / 2, -1);
+	}
 
-	@NotNull
 	@Override
 	public List<? extends NarratableEntry> narratables() {
 		return ImmutableList.of(this.changeButton, this.resetButton);
 	}
 
-	@NotNull
 	@Override
 	public List<? extends GuiEventListener> children() {
 		return ImmutableList.of(this.changeButton, this.resetButton);

@@ -9,7 +9,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +20,7 @@ import java.util.function.Consumer;
  */
 public class KeybindManager {
 	private static final Logger logger = LoggerFactory.getLogger("KeybindManager");
-	private static final Multimap<Identifier, @NotNull Consumer<Keybind>> consumers = HashMultimap.create();
+	private static final Multimap<Identifier, Consumer<Keybind>> consumers = HashMultimap.create();
 	private static final Map<Identifier, Keybind> keybinds = new Object2ObjectLinkedOpenHashMap<>();
 
 	private static final List<InputConstants.Key> held = new ArrayList<>();

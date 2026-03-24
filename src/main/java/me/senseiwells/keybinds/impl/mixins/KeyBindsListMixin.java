@@ -20,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Collection;
 import java.util.Map;
 
+// TODO: Add support for Controlling's NewKeyBindsScreen
 @Mixin(KeyBindsList.class)
 public class KeyBindsListMixin extends ContainerObjectSelectionList<KeyBindsList.Entry> {
 	@Shadow private int maxNameWidth;

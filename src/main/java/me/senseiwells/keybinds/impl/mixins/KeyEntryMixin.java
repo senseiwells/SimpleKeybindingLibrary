@@ -14,14 +14,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyBindsList.KeyEntry.class)
 public class KeyEntryMixin {
-	@Shadow @Final KeyBindsList field_2742;
-
 	@Inject(
-		method = "method_19871",
+		method = "lambda$new$0",
 		at = @At("HEAD")
 	)
-	private void onButtonCallback(KeyMapping keyMapping, Button button, CallbackInfo ci) {
-		KeyBindsScreen screen = ((KeyBindsListAccessor) this.field_2742).getKeyBindsScreen();
+	private static void resetCustomKeybindWhenOnVanillaChange(
+		KeyBindsList list,
+		KeyMapping key,
+		Button button,
+		CallbackInfo ci
+	) {
+		KeyBindsScreen screen = ((KeyBindsListAccessor) list).getKeyBindsScreen();
 		((DuckKeyBindsScreen) screen).skl$setKeybind(null);
 	}
 }
