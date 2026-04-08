@@ -2,6 +2,10 @@
   "required": true,
   "package": "me.senseiwells.keybinds.impl.mixins",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "me.senseiwells.keybinds.impl.compat.KeybindingMixinConfig",
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  },
   "client": [
     "KeyBindsListAccessor",
     "KeyBindsListMixin",
@@ -10,9 +14,16 @@
     "KeyEntryInvoker",
     "KeyEntryMixin",
     "KeyMappingCategoryAccessor",
+    "compat.controlling.ControllingConstantsMixin",
+    "compat.controlling.NewKeyBindsListMixin",
+    "compat.controlling.NewKeybindsScreenMixin",
     "compat.yacl.YACLScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "compat.controlling.DisplayModeMixin",
+    "compat.controlling.SortOrderMixin"
+  ]
 }

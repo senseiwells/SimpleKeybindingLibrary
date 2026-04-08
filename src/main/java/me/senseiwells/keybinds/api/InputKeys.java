@@ -40,7 +40,6 @@ public class InputKeys extends AbstractCollection<InputConstants.Key> {
 		return !this.keys.isEmpty() && this.keys.getLast().equals(key);
 	}
 
-	@NotNull
 	@Override
 	public Iterator<InputConstants.Key> iterator() {
 		return this.keys.iterator();

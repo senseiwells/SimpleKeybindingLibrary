@@ -8,10 +8,11 @@ repositories {
     mavenCentral()
     maven("https://maven.parchmentmc.org/")
     maven("https://maven.isxander.dev/releases")
+    maven("https://api.modrinth.com/maven")
     maven("https://jitpack.io")
 }
 
-val modVersion = "0.3.0"
+val modVersion = "0.4.0"
 version = "${modVersion}+${libs.versions.minecraft.get()}"
 group = "me.senseiwells"
 
@@ -21,6 +22,9 @@ dependencies {
     implementation(libs.fabric.loader)
     implementation(libs.fabric.api)
 
+    compileOnly(libs.controlling.get())
+    compileOnly(libs.searchables.get())
+
     compileOnly(libs.yacl)
 }
 
@@ -28,8 +32,22 @@ java {
     withSourcesJar()
 }
 
+val testmod: SourceSet by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().compileClasspath
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+}
+
 loom {
     accessWidenerPath.set(file("src/main/resources/simple-keybinding-library.classtweaker"))
+
+    runs {
+        create("testmodClient") {
+            client()
+            source(testmod)
+            vmArgs("-Dmixin.debug.export=true")
+        }
+    }
 }
 
 tasks {

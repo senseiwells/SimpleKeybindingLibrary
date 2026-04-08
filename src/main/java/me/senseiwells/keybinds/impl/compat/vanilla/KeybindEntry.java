@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import me.senseiwells.keybinds.api.InputKeys;
 import me.senseiwells.keybinds.api.Keybind;
 import me.senseiwells.keybinds.impl.mixins.KeyBindsListAccessor;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -16,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Internal
 public class KeybindEntry extends KeyBindsList.Entry {
@@ -25,12 +27,15 @@ public class KeybindEntry extends KeyBindsList.Entry {
 	private final Button changeButton;
 	private final Button resetButton;
 
-	public KeybindEntry(KeyBindsList list, Keybind keybind) {
+	private final KeyMapping.Category category;
+
+	public KeybindEntry(KeyBindsList list, Keybind keybind, KeyMapping.Category category) {
 		this.list = list;
 		this.keybind = keybind;
+		this.category = category;
 
 		Component name = keybind.name();
-		this.changeButton = Button.builder(name, button -> {
+		this.changeButton = Button.builder(name, _ -> {
 			KeyBindsScreen screen = ((KeyBindsListAccessor) this.list).getKeyBindsScreen();
 			screen.selectedKey = null;
 			((DuckKeyBindsScreen) screen).skl$setKeybind(this.keybind);
@@ -40,14 +45,32 @@ public class KeybindEntry extends KeyBindsList.Entry {
 			return this.keybind.keys().isEmpty() ? Component.translatable("narrator.controls.unbound", name)
 				: Component.translatable("narrator.controls.bound", name, supplier.get());
 		}).build();
-		this.resetButton = Button.builder(Component.translatable("controls.reset"), button -> {
+		this.resetButton = Button.builder(Component.translatable("controls.reset"), _ -> {
 			this.keybind.resetKeysToDefault();
 			this.list.resetMappingAndUpdateButtons();
-		}).bounds(0, 0, 50, 20).createNarration((supplier) -> {
+		}).bounds(0, 0, 50, 20).createNarration(_ -> {
 			return Component.translatable("narrator.controls.reset", name);
 		}).build();
 
 		this.refreshEntry();
+	}
+
+	public KeyMapping.Category getCategory() {
+		return this.category;
+	}
+
+	public InputKeys getKeys() {
+		return this.keybind.keys();
+	}
+
+	public String getKeysAsString() {
+		return this.keybind.keys().stream()
+			.map(key -> key.getDisplayName().getString())
+			.collect(Collectors.joining(" "));
+	}
+
+	public Component getKeybindName() {
+		return this.keybind.name();
 	}
 
 	@Override
