@@ -12,7 +12,7 @@ repositories {
     maven("https://jitpack.io")
 }
 
-val modVersion = "0.4.0"
+val modVersion = "0.4.1"
 version = "${modVersion}+${libs.versions.minecraft.get()}"
 group = "me.senseiwells"
 
@@ -22,8 +22,10 @@ dependencies {
     implementation(libs.fabric.loader)
     implementation(libs.fabric.api)
 
-    compileOnly(libs.controlling.get())
-    compileOnly(libs.searchables.get())
+    compileOnly(libs.controlling)
+    compileOnly(libs.searchables)
+    // localRuntime(libs.controlling)
+    // localRuntime(libs.searchables)
 
     compileOnly(libs.yacl)
 }

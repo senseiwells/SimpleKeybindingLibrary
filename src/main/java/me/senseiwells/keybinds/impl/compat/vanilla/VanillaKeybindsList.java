@@ -27,6 +27,10 @@ public class VanillaKeybindsList {
 		keybinds.put(category, keybind);
 	}
 
+	public static void remove(Keybind keybind) {
+		keybinds.values().remove(keybind);
+	}
+
 	public static SortedSetMultimap<KeyMapping.Category, Either<Keybind, KeyMapping>> merge(KeyMapping[] mappings) {
 		SortedSetMultimap<KeyMapping.Category, Either<Keybind, KeyMapping>> sorted = TreeMultimap.create(
 			VanillaKeybindsList::compareCategories,

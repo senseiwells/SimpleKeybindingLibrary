@@ -75,7 +75,12 @@ public class KeybindManager {
 	 * @return Whether the custom keybind was removed.
 	 */
 	public static boolean unregister(Identifier id) {
-		return keybinds.remove(id) != null;
+		Keybind keybind = keybinds.remove(id);
+		if (keybind != null) {
+			removeFromControlsScreen(keybind);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -89,6 +94,15 @@ public class KeybindManager {
 	 */
 	public static void addToControlsScreen(KeyMapping.Category category, Keybind keybind) {
 		VanillaKeybindsList.add(category, keybind);
+	}
+
+	/**
+	 * Removes a keybind from the vanilla controls screen.
+	 *
+	 * @param keybind The keybind to remove.
+	 */
+	public static void removeFromControlsScreen(Keybind keybind) {
+		VanillaKeybindsList.remove(keybind);
 	}
 
 	/**
