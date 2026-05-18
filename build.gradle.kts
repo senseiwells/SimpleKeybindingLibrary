@@ -58,7 +58,7 @@ tasks {
         filesMatching("fabric.mod.json") {
             expand(mutableMapOf(
                 "version" to project.version,
-                "minecraft_dependency" to libs.versions.minecraft.get().replaceAfterLast('.', "x"),
+                "minecraft_dependency" to replaceVersion(libs.versions.minecraft.get(), "x"),
                 "fabric_loader_dependency" to libs.versions.fabric.loader.get(),
             ))
         }
@@ -95,6 +95,10 @@ publishing {
             }
         }
     }
+}
+
+fun replaceVersion(version: String, patch: String): String {
+    return version.replace(Regex("""^(\d+\.\d+)(\.\d+)?$"""), "$1.$patch")
 }
 
 private fun MavenPublication.updateReadme(vararg readmes: String) {
