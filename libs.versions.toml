@@ -1,15 +1,14 @@
 [versions]
-minecraft     = "26.1.2"
-fabric-loader = "0.18.6"
-parchment     = "1.21.10:2025.10.12"
-fabric-api    = "0.145.4+26.1.1"
+minecraft     = "26.2"
+fabric-loader = "0.19.3"
+fabric-api    = "0.152.1+26.2"
 
 # Compatiblity
-yacl          = "3.9.0+26.1-fabric"
+yacl          = "3.9.4+26.2-fabric"
 controlling   = "XL1X0c1E"
 searchables   = "JBRkFpZt"
 
-fabric-loom   = "1.15-SNAPSHOT"
+fabric-loom   = "1.17-SNAPSHOT"
 
 [libraries]
 minecraft     = { module = "com.mojang:minecraft"                 , version.ref = "minecraft" }

@@ -18,9 +18,9 @@ public class KeyboardHandlerMixin {
 	)
 	private boolean onKeyMappingSet(
 		InputConstants.Key key,
-		boolean held
+		boolean state
 	) {
-		if (held) {
+		if (state) {
 			KeybindManager.press(key);
 		} else {
 			KeybindManager.release(key);

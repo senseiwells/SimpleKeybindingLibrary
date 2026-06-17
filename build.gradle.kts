@@ -12,7 +12,7 @@ repositories {
     maven("https://jitpack.io")
 }
 
-val modVersion = "0.4.1"
+val modVersion = "0.5.0"
 version = "${modVersion}+${libs.versions.minecraft.get()}"
 group = "me.senseiwells"
 
@@ -46,8 +46,8 @@ loom {
     runs {
         create("testmodClient") {
             client()
-            source(testmod)
-            vmArgs("-Dmixin.debug.export=true")
+            sourceSet.set(testmod.name)
+            jvmArguments.add("-Dmixin.debug.export=true")
         }
     }
 }
