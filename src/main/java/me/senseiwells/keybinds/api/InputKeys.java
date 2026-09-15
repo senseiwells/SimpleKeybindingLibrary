@@ -9,7 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.*;
@@ -93,7 +92,7 @@ public class InputKeys extends AbstractCollection<InputConstants.Key> {
 	 * @return A {@link InputKeys} instance.
 	 */
 	public static InputKeys of(int ...keys) {
-		return new InputKeys(IntStream.of(keys).mapToObj(InputConstants.Type.KEYSYM::getOrCreate).toList());
+		return new InputKeys(IntStream.of(keys).mapToObj(InputConstants.Type.KEYBOARD::getOrCreate).toList());
 	}
 
 	@Override
@@ -112,7 +111,8 @@ public class InputKeys extends AbstractCollection<InputConstants.Key> {
 		return Objects.hashCode(this.keys);
 	}
 
-	public static class Serializer implements JsonSerializer<InputKeys>, JsonDeserializer<InputKeys> {
+	@SuppressWarnings("unused")
+    public static class Serializer implements JsonSerializer<InputKeys>, JsonDeserializer<InputKeys> {
 		public static final Serializer INSTANCE = new Serializer();
 
 		private Serializer() {
