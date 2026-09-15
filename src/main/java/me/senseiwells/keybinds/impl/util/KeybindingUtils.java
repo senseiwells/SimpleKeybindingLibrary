@@ -14,8 +14,8 @@ public class KeybindingUtils {
 		InputConstants.KEY_NUMPADENTER, InputConstants.KEY_RETURN, InputConstants.KEY_ESCAPE
 	);
 
-	private static final Codec<InputConstants.Type> KEY_TYPE_CODEC = Codec.STRING.xmap(
-        InputConstants.Type::valueOf, Enum::name
+	private static final Codec<InputConstants.Type> KEY_TYPE_CODEC = Codec.STRING.comapFlatMap(
+        KeybindingUtils::fromString, KeybindingUtils::toString
 	);
 
 	public static final Codec<InputConstants.Key> KEY_CODEC = RecordCodecBuilder.create(instance -> {
@@ -27,5 +27,17 @@ public class KeybindingUtils {
 
 	private KeybindingUtils() {
 
+	}
+
+	private static DataResult<InputConstants.Type> fromString(String string) {
+		return switch (string.toLowerCase()) {
+			case "keyboard", "keysym" -> DataResult.success(InputConstants.Type.KEYBOARD);
+			case "mouse" -> DataResult.success(InputConstants.Type.MOUSE);
+            default -> DataResult.error(() -> "Unknown input type: %s".formatted(string));
+		};
+	}
+
+	private static String toString(InputConstants.Type type) {
+		return type.name().toLowerCase();
 	}
 }
