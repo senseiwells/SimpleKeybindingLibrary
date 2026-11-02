@@ -42,6 +42,7 @@ public abstract class NewKeyBindsListMixin extends CustomList {
 		CallbackInfo ci
 	) {
 		this.clearEntries();
+		this.getAllEntries().clear();
 
 		Multimap<KeyMapping.Category, Either<Keybind, KeyMapping>> sorted = VanillaKeybindsList.merge(minecraft.options.keyMappings);
 

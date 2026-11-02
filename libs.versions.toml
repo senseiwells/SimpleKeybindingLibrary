@@ -5,8 +5,8 @@ fabric-api    = "0.160.5+26.3"
 
 # Compatiblity
 yacl          = "3.9.6+26.2-fabric"
-controlling   = "rAp2jljs"
-searchables   = "bvFby61J"
+controlling   = "V6AbRm67"
+searchables   = "wV79bLRS"
 
 fabric-loom   = "1.17-SNAPSHOT"
 
